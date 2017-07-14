@@ -45,7 +45,6 @@
 		45E38AB618AC3AA70079C928 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E38AB518AC3AA70079C928 /* Default-568h@2x.png */; };
 		45F73D0718D7ADAE00CD6DBA /* ZSSpicker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D0618D7ADAE00CD6DBA /* ZSSpicker@2x.png */; };
 		45F73D2B18D7AE9700CD6DBA /* ZSSbgcolor.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D0818D7AE9700CD6DBA /* ZSSbgcolor.png */; };
-		45F73D2C18D7AE9700CD6DBA /* ZSSbold.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D0918D7AE9700CD6DBA /* ZSSbold.png */; };
 		45F73D2D18D7AE9700CD6DBA /* ZSScenterjustify.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D0A18D7AE9700CD6DBA /* ZSScenterjustify.png */; };
 		45F73D2E18D7AE9700CD6DBA /* ZSSclearstyle.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D0B18D7AE9700CD6DBA /* ZSSclearstyle.png */; };
 		45F73D2F18D7AE9700CD6DBA /* ZSSforcejustify.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D0C18D7AE9700CD6DBA /* ZSSforcejustify.png */; };
@@ -81,7 +80,6 @@
 		45F73D4D18D7AE9700CD6DBA /* ZSSviewsource.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F73D2A18D7AE9700CD6DBA /* ZSSviewsource.png */; };
 		45F80458189B1E9300A1EDD9 /* ZSSDemoPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F80457189B1E9300A1EDD9 /* ZSSDemoPickerViewController.m */; };
 		45F860A718A84CFA0011266B /* ZSSbgcolor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F8608518A84CF90011266B /* ZSSbgcolor@2x.png */; };
-		45F860A818A84CFA0011266B /* ZSSbold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F8608618A84CF90011266B /* ZSSbold@2x.png */; };
 		45F860A918A84CFA0011266B /* ZSScenterjustify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F8608718A84CF90011266B /* ZSScenterjustify@2x.png */; };
 		45F860AA18A84CFA0011266B /* ZSSclearstyle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F8608818A84CF90011266B /* ZSSclearstyle@2x.png */; };
 		45F860AB18A84CFA0011266B /* ZSSforcejustify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F8608918A84CF90011266B /* ZSSforcejustify@2x.png */; };
@@ -122,6 +120,8 @@
 		DB703BB61D7B73600013C608 /* ZSSFontsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB703BB51D7B73600013C608 /* ZSSFontsViewController.m */; };
 		DB703BB91D7B774F0013C608 /* ZSSfonts.png in Resources */ = {isa = PBXBuildFile; fileRef = DB703BB71D7B774F0013C608 /* ZSSfonts.png */; };
 		DB703BBA1D7B774F0013C608 /* ZSSfonts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB703BB81D7B774F0013C608 /* ZSSfonts@2x.png */; };
+		ED2153D61F195CEA00EAE23B /* ZSSbold.png in Resources */ = {isa = PBXBuildFile; fileRef = ED2153D81F195CEA00EAE23B /* ZSSbold.png */; };
+		ED2153DC1F195D9600EAE23B /* ZSSbold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ED2153DE1F195D9600EAE23B /* ZSSbold@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,7 +190,6 @@
 		45E38AB518AC3AA70079C928 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		45F73D0618D7ADAE00CD6DBA /* ZSSpicker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSSpicker@2x.png"; path = "Source/Images/ZSSpicker@2x.png"; sourceTree = "<group>"; };
 		45F73D0818D7AE9700CD6DBA /* ZSSbgcolor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZSSbgcolor.png; path = Source/Images/ZSSbgcolor.png; sourceTree = "<group>"; };
-		45F73D0918D7AE9700CD6DBA /* ZSSbold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZSSbold.png; path = Source/Images/ZSSbold.png; sourceTree = "<group>"; };
 		45F73D0A18D7AE9700CD6DBA /* ZSScenterjustify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZSScenterjustify.png; path = Source/Images/ZSScenterjustify.png; sourceTree = "<group>"; };
 		45F73D0B18D7AE9700CD6DBA /* ZSSclearstyle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZSSclearstyle.png; path = Source/Images/ZSSclearstyle.png; sourceTree = "<group>"; };
 		45F73D0C18D7AE9700CD6DBA /* ZSSforcejustify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZSSforcejustify.png; path = Source/Images/ZSSforcejustify.png; sourceTree = "<group>"; };
@@ -227,7 +226,6 @@
 		45F80456189B1E9300A1EDD9 /* ZSSDemoPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZSSDemoPickerViewController.h; path = Classes/ZSSDemoPickerViewController.h; sourceTree = "<group>"; };
 		45F80457189B1E9300A1EDD9 /* ZSSDemoPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZSSDemoPickerViewController.m; path = Classes/ZSSDemoPickerViewController.m; sourceTree = "<group>"; };
 		45F8608518A84CF90011266B /* ZSSbgcolor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSSbgcolor@2x.png"; path = "Source/Images/ZSSbgcolor@2x.png"; sourceTree = "<group>"; };
-		45F8608618A84CF90011266B /* ZSSbold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSSbold@2x.png"; path = "Source/Images/ZSSbold@2x.png"; sourceTree = "<group>"; };
 		45F8608718A84CF90011266B /* ZSScenterjustify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSScenterjustify@2x.png"; path = "Source/Images/ZSScenterjustify@2x.png"; sourceTree = "<group>"; };
 		45F8608818A84CF90011266B /* ZSSclearstyle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSSclearstyle@2x.png"; path = "Source/Images/ZSSclearstyle@2x.png"; sourceTree = "<group>"; };
 		45F8608918A84CF90011266B /* ZSSforcejustify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSSforcejustify@2x.png"; path = "Source/Images/ZSSforcejustify@2x.png"; sourceTree = "<group>"; };
@@ -271,6 +269,10 @@
 		DB703BB71D7B774F0013C608 /* ZSSfonts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZSSfonts.png; path = Source/Images/ZSSfonts.png; sourceTree = "<group>"; };
 		DB703BB81D7B774F0013C608 /* ZSSfonts@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ZSSfonts@2x.png"; path = "Source/Images/ZSSfonts@2x.png"; sourceTree = "<group>"; };
 		ED2153D51F195BFD00EAE23B /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		ED2153DA1F195D2400EAE23B /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pt-BR"; path = "pt-BR.lproj/ZSSbold.png"; sourceTree = "<group>"; };
+		ED2153DB1F195D8000EAE23B /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/ZSSbold.png; sourceTree = "<group>"; };
+		ED2153DD1F195D9600EAE23B /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/ZSSbold@2x.png"; sourceTree = "<group>"; };
+		ED2153DF1F195D9700EAE23B /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pt-BR"; path = "pt-BR.lproj/ZSSbold@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,16 +332,16 @@
 		4562858E184CFBE400B6168E /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				DB703BB71D7B774F0013C608 /* ZSSfonts.png */,
-				DB703BB81D7B774F0013C608 /* ZSSfonts@2x.png */,
 				45F73D0818D7AE9700CD6DBA /* ZSSbgcolor.png */,
 				45F8608518A84CF90011266B /* ZSSbgcolor@2x.png */,
-				45F73D0918D7AE9700CD6DBA /* ZSSbold.png */,
-				45F8608618A84CF90011266B /* ZSSbold@2x.png */,
+				ED2153D81F195CEA00EAE23B /* ZSSbold.png */,
+				ED2153DE1F195D9600EAE23B /* ZSSbold@2x.png */,
 				45F73D0A18D7AE9700CD6DBA /* ZSScenterjustify.png */,
 				45F8608718A84CF90011266B /* ZSScenterjustify@2x.png */,
 				45F73D0B18D7AE9700CD6DBA /* ZSSclearstyle.png */,
 				45F8608818A84CF90011266B /* ZSSclearstyle@2x.png */,
+				DB703BB71D7B774F0013C608 /* ZSSfonts.png */,
+				DB703BB81D7B774F0013C608 /* ZSSfonts@2x.png */,
 				45F73D0C18D7AE9700CD6DBA /* ZSSforcejustify.png */,
 				45F8608918A84CF90011266B /* ZSSforcejustify@2x.png */,
 				45F73D0D18D7AE9700CD6DBA /* ZSSh1.png */,
@@ -618,7 +620,7 @@
 				45F73D4418D7AE9700CD6DBA /* ZSSstrikethrough.png in Resources */,
 				23A76DC4187532F1000169F6 /* editor.html in Resources */,
 				DB1D27A31D79EC1700EC1CBD /* ZSSimageDevice@2x.png in Resources */,
-				45F860A818A84CFA0011266B /* ZSSbold@2x.png in Resources */,
+				ED2153DC1F195D9600EAE23B /* ZSSbold@2x.png in Resources */,
 				45F860BB18A84CFA0011266B /* ZSSparagraph@2x.png in Resources */,
 				45F860AD18A84CFA0011266B /* ZSSh2@2x.png in Resources */,
 				45F73D3418D7AE9700CD6DBA /* ZSSh5.png in Resources */,
@@ -634,7 +636,7 @@
 				45F860B618A84CFA0011266B /* ZSSkeyboard@2x.png in Resources */,
 				45F860AA18A84CFA0011266B /* ZSSclearstyle@2x.png in Resources */,
 				DB703BB11D7B2FEA0013C608 /* jQuery.js in Resources */,
-				45F73D2C18D7AE9700CD6DBA /* ZSSbold.png in Resources */,
+				ED2153D61F195CEA00EAE23B /* ZSSbold.png in Resources */,
 				45F73D4018D7AE9700CD6DBA /* ZSSpicker.png in Resources */,
 				DB703BB91D7B774F0013C608 /* ZSSfonts.png in Resources */,
 				45F73D4818D7AE9700CD6DBA /* ZSStextcolor.png in Resources */,
@@ -730,6 +732,26 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		ED2153D81F195CEA00EAE23B /* ZSSbold.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED2153DA1F195D2400EAE23B /* pt-BR */,
+				ED2153DB1F195D8000EAE23B /* en */,
+			);
+			name = ZSSbold.png;
+			path = Source/Images;
+			sourceTree = "<group>";
+		};
+		ED2153DE1F195D9600EAE23B /* ZSSbold@2x.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED2153DD1F195D9600EAE23B /* en */,
+				ED2153DF1F195D9700EAE23B /* pt-BR */,
+			);
+			name = "ZSSbold@2x.png";
+			path = Source/Images;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -780,6 +802,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSSRichTextEditor/ZSSRichTextEditor-Prefix.pch";
@@ -788,6 +811,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zedsaid.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ZSSRichTextEditor;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Adhoc;
@@ -886,6 +910,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSSRichTextEditor/ZSSRichTextEditor-Prefix.pch";
@@ -894,6 +919,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zedsaid.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ZSSRichTextEditor;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -905,6 +931,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSSRichTextEditor/ZSSRichTextEditor-Prefix.pch";
@@ -913,6 +940,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zedsaid.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ZSSRichTextEditor;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
