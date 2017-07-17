@@ -32,6 +32,9 @@
     self.alwaysShowToolbar = YES;
     self.receiveEditorDidChangeEvents = NO;
     
+    //Set presentation style
+    self.presentationStyle = ZSSRichTextEditorPresentationStyleModal;
+    
     // Export HTML
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Export" style:UIBarButtonItemStylePlain target:self action:@selector(exportHTML)];
     

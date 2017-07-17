@@ -191,10 +191,9 @@
     if (self.delegate) {
         //HRRGBColor rgbColor = [colorPickerView RGBColor];
         [self.delegate setSelectedFontFamily:selectedFontFamily];
+        [self.delegate closeViewController:self];
     }
     
-    [self.navigationController popViewControllerAnimated:YES];
-
 }
 
 - (void)save:(id)sender {
@@ -202,7 +201,7 @@
 }
 
 - (void)cancel:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate closeViewController:self];
 }
 
 #pragma mark - Memory Warning Section

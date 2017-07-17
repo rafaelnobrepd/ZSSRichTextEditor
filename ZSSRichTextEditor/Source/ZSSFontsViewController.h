@@ -23,6 +23,7 @@ typedef NS_ENUM(int16_t, ZSSFontFamily) {
 
 @protocol ZSSFontsViewControllerDelegate
 - (void)setSelectedFontFamily:(ZSSFontFamily)fontFamily;
+- (void)closeViewController:(UIViewController *)viewControllerToClose;
 @end
 
 @interface ZSSFontsViewController : UIViewController {

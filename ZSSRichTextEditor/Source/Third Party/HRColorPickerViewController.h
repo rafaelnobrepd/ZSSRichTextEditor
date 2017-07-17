@@ -32,6 +32,7 @@
 
 @protocol HRColorPickerViewControllerDelegate
 - (void)setSelectedColor:(UIColor*)color tag:(int)tag;
+- (void)closeViewController:(UIViewController *)viewControllerToClose;
 @end
 
 #define HRColorPickerDelegate HRColorPickerViewControllerDelegate

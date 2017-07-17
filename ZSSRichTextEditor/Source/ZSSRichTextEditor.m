@@ -253,6 +253,7 @@ static CGFloat kDefaultScale = 0.5;
     self.alwaysShowToolbar = NO;
     self.shouldShowKeyboard = YES;
     self.formatHTML = YES;
+    self.presentationStyle = ZSSRichTextEditorPresentationStylePush;
     
     //Initalise enabled toolbar items array
     self.enabledToolbarItems = [[NSArray alloc] init];
@@ -915,6 +916,33 @@ static CGFloat kDefaultScale = 0.5;
 
 #pragma mark - Editor Modification Section
 
+
+- (void)showViewController:(UIViewController *)viewControllerToPresent {
+    switch (self.presentationStyle) {
+        case ZSSRichTextEditorPresentationStyleModal: {
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewControllerToPresent];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentViewController:navigationController animated:YES completion:nil];
+            break;
+        }
+        default:
+            [self.navigationController pushViewController:viewControllerToPresent animated:YES];
+            break;
+    }
+}
+
+- (void)closeViewController:(UIViewController *)viewControllerToClose {
+    switch (self.presentationStyle) {
+        case ZSSRichTextEditorPresentationStyleModal:
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        default:
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+    }
+}
+
 - (void)setCSS:(NSString *)css {
     
     self.customCSS = css;
@@ -1164,8 +1192,7 @@ static CGFloat kDefaultScale = 0.5;
     //Call picker
     ZSSFontsViewController *fontPicker = [ZSSFontsViewController cancelableFontPickerViewControllerWithFontFamily:ZSSFontFamilyDefault];
     fontPicker.delegate = self;
-    [self.navigationController pushViewController:fontPicker animated:YES];
-    
+    [self showViewController:fontPicker];
 }
 
 - (void)setSelectedFontFamily:(ZSSFontFamily)fontFamily {
@@ -1222,7 +1249,7 @@ static CGFloat kDefaultScale = 0.5;
     colorPicker.delegate = self;
     colorPicker.tag = 1;
     colorPicker.title = NSLocalizedString(@"Text Color", nil);
-    [self.navigationController pushViewController:colorPicker animated:YES];
+    [self showViewController:colorPicker];
     
 }
 
@@ -1236,7 +1263,7 @@ static CGFloat kDefaultScale = 0.5;
     colorPicker.delegate = self;
     colorPicker.tag = 2;
     colorPicker.title = NSLocalizedString(@"BG Color", nil);
-    [self.navigationController pushViewController:colorPicker animated:YES];
+    [self showViewController:colorPicker];
     
 }
 

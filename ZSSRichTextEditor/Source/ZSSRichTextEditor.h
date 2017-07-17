@@ -50,12 +50,18 @@ static NSString * const ZSSRichTextEditorToolbarAll = @"com.zedsaid.toolbaritem.
 static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem.none";
 static NSString * const ZSSRichTextEditorToolbarFonts = @"com.zedsaid.toolbaritem.fonts";
 
+
 @class ZSSBarButtonItem;
 
 /**
  *  The viewController used with ZSSRichTextEditor
  */
 @interface ZSSRichTextEditor : UIViewController <UIWebViewDelegate, HRColorPickerViewControllerDelegate, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,ZSSFontsViewControllerDelegate>
+
+typedef enum {
+    ZSSRichTextEditorPresentationStyleModal,
+    ZSSRichTextEditorPresentationStylePush
+} ZSSRichTextEditorPresentationStyle;
 
 
 /**
@@ -82,6 +88,11 @@ static NSString * const ZSSRichTextEditorToolbarFonts = @"com.zedsaid.toolbarite
  * If the sub class recieves text did change events or not
  */
 @property (nonatomic) BOOL receiveEditorDidChangeEvents;
+
+/**
+ * Defines the presentation style for internal controller
+ */
+@property (nonatomic) ZSSRichTextEditorPresentationStyle presentationStyle;
 
 /**
  *  The placeholder text to use if there is no editor content
@@ -226,5 +237,10 @@ static NSString * const ZSSRichTextEditorToolbarFonts = @"com.zedsaid.toolbarite
  *  Set custom css
  */
 - (void)setCSS:(NSString *)css;
+
+/**
+ *  Show accessory view controller with predefined presentation style
+ */
+- (void)showViewController:(UIViewController *)viewControllerToPresent;
 
 @end
