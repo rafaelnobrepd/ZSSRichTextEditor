@@ -122,6 +122,7 @@
 		ED8373A21F1D201E00D3D534 /* ZSSstrikethrough@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ED8373A41F1D201E00D3D534 /* ZSSstrikethrough@2x.png */; };
 		ED8373A71F1D203300D3D534 /* ZSSunderline.png in Resources */ = {isa = PBXBuildFile; fileRef = ED8373A91F1D203300D3D534 /* ZSSunderline.png */; };
 		ED8373AB1F1D203900D3D534 /* ZSSunderline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ED8373AD1F1D203900D3D534 /* ZSSunderline@2x.png */; };
+		ED8373B11F1D2C4600D3D534 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED8373B31F1D2C4600D3D534 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -277,6 +278,8 @@
 		ED8373AA1F1D203500D3D534 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pt-BR"; path = "pt-BR.lproj/ZSSunderline.png"; sourceTree = "<group>"; };
 		ED8373AC1F1D203900D3D534 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/ZSSunderline@2x.png"; sourceTree = "<group>"; };
 		ED8373AE1F1D203A00D3D534 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pt-BR"; path = "pt-BR.lproj/ZSSunderline@2x.png"; sourceTree = "<group>"; };
+		ED8373B21F1D2C4600D3D534 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ED8373B41F1D2C4800D3D534 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -503,6 +506,7 @@
 		4581EBBE184BB92E0048CAB0 /* Editor Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ED8373B31F1D2C4600D3D534 /* Localizable.strings */,
 				23A76DC2187532F1000169F6 /* editor.html */,
 				23A76DC3187532F1000169F6 /* ZSSRichTextEditor.js */,
 				DB703BB01D7B2FEA0013C608 /* jQuery.js */,
@@ -572,8 +576,7 @@
 				ORGANIZATIONNAME = "Zed Said Studio";
 				TargetAttributes = {
 					4581EB7B184845790048CAB0 = {
-						DevelopmentTeam = BF5MR6JE6W;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -613,6 +616,7 @@
 				45F860B718A84CFA0011266B /* ZSSleftjustify@2x.png in Resources */,
 				45F73D4518D7AE9700CD6DBA /* ZSSsubscript.png in Resources */,
 				45F860C718A84CFA0011266B /* ZSSunorderedlist@2x.png in Resources */,
+				ED8373B11F1D2C4600D3D534 /* Localizable.strings in Resources */,
 				45F73D4A18D7AE9700CD6DBA /* ZSSundo.png in Resources */,
 				45F860AF18A84CFA0011266B /* ZSSh4@2x.png in Resources */,
 				ED8373AB1F1D203900D3D534 /* ZSSunderline@2x.png in Resources */,
@@ -797,6 +801,15 @@
 			path = Source/Images;
 			sourceTree = "<group>";
 		};
+		ED8373B31F1D2C4600D3D534 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED8373B21F1D2C4600D3D534 /* en */,
+				ED8373B41F1D2C4800D3D534 /* pt-BR */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -847,8 +860,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BF5MR6JE6W;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSSRichTextEditor/ZSSRichTextEditor-Prefix.pch";
 				INFOPLIST_FILE = "ZSSRichTextEditor/ZSSRichTextEditor-Info.plist";
@@ -955,8 +968,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BF5MR6JE6W;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSSRichTextEditor/ZSSRichTextEditor-Prefix.pch";
 				INFOPLIST_FILE = "ZSSRichTextEditor/ZSSRichTextEditor-Info.plist";
@@ -976,8 +989,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BF5MR6JE6W;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSSRichTextEditor/ZSSRichTextEditor-Prefix.pch";
 				INFOPLIST_FILE = "ZSSRichTextEditor/ZSSRichTextEditor-Info.plist";

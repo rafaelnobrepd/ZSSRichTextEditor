@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  ZSSRichTextEditor
+
+  Created by felipe.frizeiro on 17/07/17.
+  Copyright © 2017 Zed Said Studio. All rights reserved.
+*/
+
+"Alt" = "Descrição";
+"BG Color" = "Cor do realce";
+"Cancel" = "Cancelar";
+"Fonts" = "Fonte";
+"Image scale, 0.5 by default" = "Escala da imagem (padrão: 0,5)";
+"Insert Image From Device" = "Imagem no dispositivo";
+"Insert Image" = "Inserir imagem";
+"Insert Link" = "Inserir link";
+"Insert" = "Inserir";
+"Pick Image" = "Escolher";
+"Pick New Image" = "Nova imagem";
+"Text Color" = "Cor da fonte";
+"Title" = "Título";
+"Save" = "Definir";
+"Update" = "Atualizar";
+"URL (required)" = "URL (obrigatória)";

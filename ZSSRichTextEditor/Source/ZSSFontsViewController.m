@@ -52,14 +52,14 @@
 
 - (void)setUpNavigation {
     
-    self.navigationItem.title = @"Fonts";
+    self.navigationItem.title = NSLocalizedString(@"Fonts", nil);
     
     UIBarButtonItem *buttonItem;
     
     buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = buttonItem;
     
-    buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
+    buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = buttonItem;
     
 }
