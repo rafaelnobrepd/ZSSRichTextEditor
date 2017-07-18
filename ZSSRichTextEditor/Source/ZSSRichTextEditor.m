@@ -107,6 +107,11 @@ static Class hackishFixClass = Nil;
 @property (nonatomic, strong) NSString *htmlString;
 
 /*
+ *  Completion handler for setHTML
+ */
+@property (nonatomic, copy) void (^setHtmlCompletion)();
+
+/*
  *  UIWebView for writing/editing/displaying the content
  */
 @property (nonatomic, strong) UIWebView *editorView;
@@ -1016,7 +1021,13 @@ static CGFloat kDefaultScale = 0.5;
     if (self.editorLoaded) {
         [self updateHTML];
     }
+}
+
+- (void)setHTML:(NSString *)html completion:(nullable void (^)(void))handler {
+    if (handler != nil)
+        self.setHtmlCompletion = handler;
     
+    [self setHTML:html];
 }
 
 - (void)updateHTML {
@@ -1026,6 +1037,11 @@ static CGFloat kDefaultScale = 0.5;
     NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+    
+    if (self.setHtmlCompletion != nil) {
+        self.setHtmlCompletion();
+        self.setHtmlCompletion = nil;
+    }
     
 }
 

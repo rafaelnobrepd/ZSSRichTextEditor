@@ -117,10 +117,19 @@ typedef enum {
 /**
  *  Sets the HTML for the entire editor
  *
- *  @param html  HTML string to set for the editor
+ *  @param html         HTML string to set for the editor
  *
  */
 - (void)setHTML:(NSString *)html;
+
+/**
+ *  Sets the HTML for the entire editor
+ *
+ *  @param html         HTML string to set for the editor
+ *  @param completion   Block to execute after HTML setted
+ *
+ */
+- (void)setHTML:(NSString *)html completion:(nullable void (^)(void))handler;
 
 /**
  *  Returns the HTML from the Rich Text Editor
