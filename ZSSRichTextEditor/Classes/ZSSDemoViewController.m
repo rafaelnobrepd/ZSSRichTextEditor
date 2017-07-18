@@ -84,6 +84,8 @@
     
     NSLog(@"%@", [self getHTML]);
     
+    NSLog(@"isModified: %@", [self isModified] ? @"YES" : @"NO");
+    
 }
 
 - (void)editorDidChangeWithText:(NSString *)text andHTML:(NSString *)html {

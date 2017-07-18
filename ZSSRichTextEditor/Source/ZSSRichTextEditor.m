@@ -1043,6 +1043,8 @@ static CGFloat kDefaultScale = 0.5;
         self.setHtmlCompletion = nil;
     }
     
+    self.internalHTML = self.getHTML;
+    
 }
 
 - (NSString *)getHTML {
@@ -1054,6 +1056,9 @@ static CGFloat kDefaultScale = 0.5;
     
 }
 
+- (Boolean)isModified {
+    return ![self.internalHTML isEqualToString:self.getHTML];
+}
 
 - (void)insertHTML:(NSString *)html {
     

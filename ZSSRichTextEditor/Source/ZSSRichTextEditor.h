@@ -138,6 +138,12 @@ typedef enum {
 - (NSString *)getHTML;
 
 /**
+ *  Returns if HTML is modified
+ *
+ */
+- (Boolean)isModified;
+
+/**
  *  Returns the plain text from the Rich Text Editor
  *
  */
