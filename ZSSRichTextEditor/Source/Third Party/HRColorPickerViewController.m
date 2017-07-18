@@ -107,7 +107,8 @@
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = buttonItem;
         
-        buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+        NSString *buttonTitle = NSLocalizedStringFromTableInBundle(@"Save", nil, [NSBundle bundleForClass:[HRColorPickerViewController class]], nil);
+        buttonItem = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
 }

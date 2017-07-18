@@ -943,6 +943,10 @@ static CGFloat kDefaultScale = 0.5;
     }
 }
 
+- (NSString *)localizedString:(NSString *)key {
+    return NSLocalizedStringFromTableInBundle(key, nil, self.bundle, nil);
+}
+
 - (void)setCSS:(NSString *)css {
     
     self.customCSS = css;
@@ -1248,7 +1252,7 @@ static CGFloat kDefaultScale = 0.5;
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
     colorPicker.delegate = self;
     colorPicker.tag = 1;
-    colorPicker.title = NSLocalizedString(@"Text Color", nil);
+    colorPicker.title = [self localizedString:@"Text Color"];
     [self showViewController:colorPicker];
     
 }
@@ -1262,7 +1266,7 @@ static CGFloat kDefaultScale = 0.5;
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
     colorPicker.delegate = self;
     colorPicker.tag = 2;
-    colorPicker.title = NSLocalizedString(@"BG Color", nil);
+    colorPicker.title = [self localizedString:@"BG Color"];
     [self showViewController:colorPicker];
     
 }
@@ -1302,7 +1306,7 @@ static CGFloat kDefaultScale = 0.5;
 - (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title {
     
     // Insert Button Title
-    NSString *insertButtonTitle = !self.selectedLinkURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
+    NSString *insertButtonTitle = !self.selectedLinkURL ? [self localizedString:@"Insert"] : [self localizedString:@"Update"];
     
     // Picker Button
     UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1312,9 +1316,9 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[self localizedString:@"Insert Link"] message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"URL (required)", nil);
+            textField.placeholder = [self localizedString:@"URL (required)"];
             if (url) {
                 textField.text = url;
             }
@@ -1323,14 +1327,14 @@ static CGFloat kDefaultScale = 0.5;
             textField.clearButtonMode = UITextFieldViewModeAlways;
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Title", nil);
+            textField.placeholder = [self localizedString:@"Title"];
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (title) {
                 textField.text = title;
             }
         }];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:[self localizedString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self focusTextEditor];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -1349,11 +1353,12 @@ static CGFloat kDefaultScale = 0.5;
         
     } else {
         
-        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
+        self.alertView = [[UIAlertView alloc] initWithTitle:[self localizedString:@"Insert Link"] message:nil delegate:self
+                                          cancelButtonTitle:[self localizedString:@"Cancel"] otherButtonTitles:insertButtonTitle, nil];
         self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
         self.alertView.tag = 2;
         UITextField *linkURL = [self.alertView textFieldAtIndex:0];
-        linkURL.placeholder = NSLocalizedString(@"URL (required)", nil);
+        linkURL.placeholder = [self localizedString:@"URL (required)"];
         if (url) {
             linkURL.text = url;
         }
@@ -1363,7 +1368,7 @@ static CGFloat kDefaultScale = 0.5;
         
         UITextField *alt = [self.alertView textFieldAtIndex:1];
         alt.secureTextEntry = NO;
-        alt.placeholder = NSLocalizedString(@"Title", nil);
+        alt.placeholder = [self localizedString:@"Title"];
         if (title) {
             alt.text = title;
         }
@@ -1451,7 +1456,7 @@ static CGFloat kDefaultScale = 0.5;
 - (void)showInsertImageDialogWithLink:(NSString *)url alt:(NSString *)alt {
     
     // Insert Button Title
-    NSString *insertButtonTitle = !self.selectedImageURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
+    NSString *insertButtonTitle = !self.selectedImageURL ? [self localizedString:@"Insert"] : [self localizedString:@"Update"];
     
     // Picker Button
     UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1461,9 +1466,9 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[self localizedString:@"Insert Image"] message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"URL (required)", nil);
+            textField.placeholder = [self localizedString:@"URL (required)"];
             if (url) {
                 textField.text = url;
             }
@@ -1472,14 +1477,14 @@ static CGFloat kDefaultScale = 0.5;
             textField.clearButtonMode = UITextFieldViewModeAlways;
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Alt", nil);
+            textField.placeholder = [self localizedString:@"Alt"];
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (alt) {
                 textField.text = alt;
             }
         }];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:[self localizedString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self focusTextEditor];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -1497,11 +1502,11 @@ static CGFloat kDefaultScale = 0.5;
         
     } else {
         
-        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
+        self.alertView = [[UIAlertView alloc] initWithTitle:[self localizedString:@"Insert Image"] message:nil delegate:self cancelButtonTitle:[self localizedString:@"Cancel"] otherButtonTitles:insertButtonTitle, nil];
         self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
         self.alertView.tag = 1;
         UITextField *imageURL = [self.alertView textFieldAtIndex:0];
-        imageURL.placeholder = NSLocalizedString(@"URL (required)", nil);
+        imageURL.placeholder = [self localizedString:@"URL (required)"];
         if (url) {
             imageURL.text = url;
         }
@@ -1512,7 +1517,7 @@ static CGFloat kDefaultScale = 0.5;
         
         UITextField *alt1 = [self.alertView textFieldAtIndex:1];
         alt1.secureTextEntry = NO;
-        alt1.placeholder = NSLocalizedString(@"Alt", nil);
+        alt1.placeholder = [self localizedString:@"Alt"];
         alt1.clearButtonMode = UITextFieldViewModeAlways;
         if (alt) {
             alt1.text = alt;
@@ -1526,16 +1531,16 @@ static CGFloat kDefaultScale = 0.5;
 - (void)showInsertImageDialogFromDeviceWithScale:(CGFloat)scale alt:(NSString *)alt {
     
     // Insert button title
-    NSString *insertButtonTitle = !self.selectedImageURL ? NSLocalizedString(@"Pick Image", nil) : NSLocalizedString(@"Pick New Image", nil);
+    NSString *insertButtonTitle = !self.selectedImageURL ? [self localizedString:@"Pick Image"] : [self localizedString:@"Pick New Image"];
     
     //If the OS version supports the new UIAlertController go for it. Otherwise use the old UIAlertView
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Image From Device", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[self localizedString:@"Insert Image From Device"] message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         //Add alt text field
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Alt", nil);
+            textField.placeholder = [self localizedString:@"Alt"];
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (alt) {
@@ -1547,12 +1552,12 @@ static CGFloat kDefaultScale = 0.5;
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
-            textField.placeholder = NSLocalizedString(@"Image scale, 0.5 by default", nil);
+            textField.placeholder = [self localizedString:@"Image scale, 0.5 by default"];
             textField.keyboardType = UIKeyboardTypeDecimalPad;
         }];
         
         //Cancel action
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:[self localizedString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self focusTextEditor];
         }]];
         
@@ -1572,20 +1577,20 @@ static CGFloat kDefaultScale = 0.5;
         
     } else {
         
-        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
+        self.alertView = [[UIAlertView alloc] initWithTitle:[self localizedString:@"Insert Image"] message:nil delegate:self cancelButtonTitle:[self localizedString:@"Cancel"] otherButtonTitles:insertButtonTitle, nil];
         self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
         self.alertView.tag = 3;
         
         UITextField *textFieldAlt = [self.alertView textFieldAtIndex:0];
         textFieldAlt.secureTextEntry = NO;
-        textFieldAlt.placeholder = NSLocalizedString(@"Alt", nil);
+        textFieldAlt.placeholder = [self localizedString:@"Alt"];
         textFieldAlt.clearButtonMode = UITextFieldViewModeAlways;
         if (alt) {
             textFieldAlt.text = alt;
         }
         
         UITextField *textFieldScale = [self.alertView textFieldAtIndex:1];
-        textFieldScale.placeholder = NSLocalizedString(@"Image scale, 0.5 by default", nil);
+        textFieldScale.placeholder = [self localizedString:@"Image scale, 0.5 by default"];
         textFieldScale.keyboardType = UIKeyboardTypeDecimalPad;
         
         [self.alertView show];
