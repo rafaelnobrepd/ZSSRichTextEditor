@@ -52,14 +52,18 @@
 
 - (void)setUpNavigation {
     
-    self.navigationItem.title = NSLocalizedString(@"Fonts", nil);
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    
+    self.navigationItem.title = NSLocalizedStringFromTableInBundle(@"Fonts", nil, bundle, nil);
     
     UIBarButtonItem *buttonItem;
     
     buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = buttonItem;
     
-    buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+    buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTableInBundle(@"Save", nil, bundle, nil)
+                                                  style:UIBarButtonItemStyleDone
+                                                 target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = buttonItem;
     
 }
@@ -67,7 +71,6 @@
 - (void)createTableView {
     
     UITableView *tableView = [[UITableView alloc] init];
-//    tableView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height);
     tableView.frame = self.view.bounds;
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -85,9 +88,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     return 7;
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -99,7 +100,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    float fontSize = 20.0f;
+    float fontSize = cell.textLabel.font.pointSize;
     
     switch (indexPath.row) {
         case 0:
@@ -141,8 +142,7 @@
         break;
     }
     
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
     
@@ -150,6 +150,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell != nil)
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     switch (indexPath.row) {
         case 0:
@@ -186,12 +189,17 @@
     
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell != nil)
+        cell.accessoryType = UITableViewCellAccessoryNone;
+}
+
 #pragma mark - Navigation Item Interactions Section
 
 - (void)save {
     
     if (self.delegate) {
-        //HRRGBColor rgbColor = [colorPickerView RGBColor];
         [self.delegate setSelectedFontFamily:selectedFontFamily];
         [self.delegate closeViewController:self];
     }
