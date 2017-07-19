@@ -72,25 +72,16 @@
     return self;
 }
 
-- (void)loadView
+- (void)loadColorPickerView
 {
-    CGRect frame = [[UIScreen mainScreen] applicationFrame];
-    frame.size.height -= 44.f;
-    
-    self.view = [[UIView alloc] initWithFrame:frame];
-    
     HRRGBColor rgbColor;
     RGBColorFromUIColor(_color, &rgbColor);
     
     HRColorPickerStyle style;
     
-// j5136p1 12/08/2014 : Set size to mainScreen size and if a navigationviewcontroller exists we change it to navigation controller view size
-    CGSize viewSize = [[UIScreen mainScreen] applicationFrame].size;
+    // Best to use autoresizingMask (line 93)
     
-// j5136p1 12/08/2014 : if a navigationviewcontroller exists we change it to navigation controller view size to fit ex. modal views
-    if (self.navigationController)
-        viewSize = CGSizeMake(self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
-    
+    CGSize viewSize = self.view.bounds.size;
     if (_fullColor) {
         style = [HRColorPickerView fitScreenFullColorStyleWithSize:viewSize];
     }else{
@@ -98,6 +89,14 @@
     }
     
     colorPickerView = [[HRColorPickerView alloc] initWithStyle:style defaultColor:rgbColor];
+    
+    colorPickerView.tag = 860826;
+    colorPickerView.frame = self.view.bounds;
+    colorPickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    UIView *existingView = [self.view viewWithTag:colorPickerView.tag];
+    if (existingView != nil)
+        [existingView removeFromSuperview];
     
     [self.view addSubview:colorPickerView];
     
@@ -113,9 +112,13 @@
     }
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
+    
+    // reload view when necessary
+    [self loadColorPickerView];
+    [self.view addObserver:self forKeyPath:@"frame" options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -124,6 +127,15 @@
     
     if (_saveStyle == HCPCSaveStyleSaveAlways) {
         [self save:self];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.view && [keyPath isEqualToString:@"frame"]) {
+        [self loadColorPickerView];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
