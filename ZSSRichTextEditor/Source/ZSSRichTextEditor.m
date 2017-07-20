@@ -1057,7 +1057,7 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (Boolean)isModified {
-    return ![self.internalHTML isEqualToString:self.getHTML];
+    return !(self.internalHTML == self.getHTML || [self.internalHTML isEqualToString:self.getHTML]);
 }
 
 - (void)insertHTML:(NSString *)html {
