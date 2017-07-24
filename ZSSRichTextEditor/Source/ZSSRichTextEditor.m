@@ -202,6 +202,11 @@ static Class hackishFixClass = Nil;
 @property (nonatomic) BOOL editorLoaded;
 
 /*
+ *  BOOL for if the keyboard is visible or not
+ */
+@property (nonatomic) BOOL keyboardVisible;
+
+/*
  *  Image Picker for selecting photos from users photo library
  */
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
@@ -253,6 +258,7 @@ static CGFloat kDefaultScale = 0.5;
     self.bundle = [NSBundle bundleForClass:[ZSSRichTextEditor class]];
     
     //Initialise variables
+    self.keyboardVisible = NO;
     self.editorLoaded = NO;
     self.receiveEditorDidChangeEvents = NO;
     self.alwaysShowToolbar = NO;
@@ -293,10 +299,10 @@ static CGFloat kDefaultScale = 0.5;
         toolbarCropper.clipsToBounds = YES;
         
         // Use a toolbar so that we can tint
-        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-7, -1, 44, 44)];
+        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-12, -1, 44, 44)];
         [toolbarCropper addSubview:keyboardToolbar];
         
-        self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboard.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
+        self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
                                                               style:UIBarButtonItemStylePlain
                                                              target:self
                                                              action:@selector(dismissKeyboard)];
@@ -1075,7 +1081,13 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)dismissKeyboard {
-    [self.view endEditing:YES];
+    if (_keyboardVisible) {
+        [self.view endEditing:YES];
+        self.keyboardItem.image = [UIImage imageNamed:@"ZSSkeyboardUp.png" inBundle:self.bundle compatibleWithTraitCollection:nil];
+    } else {
+        [self focusTextEditor];
+        self.keyboardItem.image = [UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil];
+    }
 }
 
 - (void)showHTMLSource:(ZSSBarButtonItem *)barButtonItem {
@@ -2020,9 +2032,12 @@ static CGFloat kDefaultScale = 0.5;
             [self setFooterHeight:(keyboardHeight - 8)];
             [self setContentHeight: self.editorViewFrame.size.height];
             
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            _keyboardVisible = YES;
+        }];
         
     } else {
+        
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
@@ -2064,7 +2079,9 @@ static CGFloat kDefaultScale = 0.5;
             [self setFooterHeight:0];
             [self setContentHeight:self.editorViewFrame.size.height];
             
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            _keyboardVisible = NO;
+        }];
         
     }
     
