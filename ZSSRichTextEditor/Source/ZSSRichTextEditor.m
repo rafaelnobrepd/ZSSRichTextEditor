@@ -291,7 +291,7 @@ static CGFloat kDefaultScale = 0.5;
     [self createParentHoldingView];
     
     //Hide Keyboard
-    if (![self isIpad]) {
+    if (![self isIpad]) { 
         
         // Toolbar holder used to crop and position toolbar
         UIView *toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-44, 0, 44, 44)];
@@ -300,6 +300,7 @@ static CGFloat kDefaultScale = 0.5;
         
         // Use a toolbar so that we can tint
         UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-12, -1, 44, 44)];
+        keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
         [toolbarCropper addSubview:keyboardToolbar];
         
         self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
@@ -1080,13 +1081,18 @@ static CGFloat kDefaultScale = 0.5;
     
 }
 
+- (void)updateKeyboardImage {
+    self.keyboardItem.image = [UIImage imageNamed: _keyboardVisible ? @"ZSSkeyboardDown.png" : @"ZSSkeyboardUp.png"
+                                         inBundle:self.bundle
+                    compatibleWithTraitCollection:nil];
+}
+
 - (void)dismissKeyboard {
     if (_keyboardVisible) {
         [self.view endEditing:YES];
-        self.keyboardItem.image = [UIImage imageNamed:@"ZSSkeyboardUp.png" inBundle:self.bundle compatibleWithTraitCollection:nil];
+        [self updateKeyboardImage];
     } else {
         [self focusTextEditor];
-        self.keyboardItem.image = [UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil];
     }
 }
 
@@ -1773,6 +1779,9 @@ static CGFloat kDefaultScale = 0.5;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self focusTextEditor];
         });
+    } else if (_alwaysShowToolbar) {
+        [self toolbarOnHideKeyboard:0 keyboardHeight:0 sizeOfToolbar:self.toolbarHolder.frame.size.height];
+        [self updateKeyboardImage];
     }
     
     /*
@@ -1983,6 +1992,46 @@ static CGFloat kDefaultScale = 0.5;
 
 #pragma mark - Keyboard status
 
+- (void)toolbarOnHideKeyboard:(int)extraHeight keyboardHeight:(CGFloat)keyboardHeight sizeOfToolbar:(CGFloat)sizeOfToolbar {
+    CGRect frame = self.toolbarHolder.frame;
+    
+    if (_alwaysShowToolbar) {
+        frame.origin.y = self.view.frame.size.height - sizeOfToolbar;
+    } else {
+        frame.origin.y = self.view.frame.size.height + keyboardHeight;
+    }
+    
+    self.toolbarHolder.frame = frame;
+    
+    // Editor View
+    CGRect editorFrame = self.editorView.frame;
+    
+    if (_alwaysShowToolbar) {
+        editorFrame.size.height = ((self.view.frame.size.height - sizeOfToolbar) - extraHeight);
+    } else {
+        editorFrame.size.height = self.view.frame.size.height;
+    }
+    
+    self.editorView.frame = editorFrame;
+    self.editorViewFrame = self.editorView.frame;
+    self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
+    self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    
+    // Source View
+    CGRect sourceFrame = self.sourceView.frame;
+    
+    if (_alwaysShowToolbar) {
+        sourceFrame.size.height = ((self.view.frame.size.height - sizeOfToolbar) - extraHeight);
+    } else {
+        sourceFrame.size.height = self.view.frame.size.height;
+    }
+    
+    self.sourceView.frame = sourceFrame;
+    
+    [self setFooterHeight:0];
+    [self setContentHeight:self.editorViewFrame.size.height];
+}
+
 - (void)keyboardWillShowOrHide:(NSNotification *)notification {
     
     // Orientation
@@ -2008,6 +2057,8 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
         
+        _keyboardVisible = YES;
+        
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
             // Toolbar
@@ -2032,58 +2083,21 @@ static CGFloat kDefaultScale = 0.5;
             [self setFooterHeight:(keyboardHeight - 8)];
             [self setContentHeight: self.editorViewFrame.size.height];
             
-        } completion:^(BOOL finished) {
-            _keyboardVisible = YES;
-        }];
+        } completion: NULL];
         
     } else {
         
+        _keyboardVisible = NO;
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
-            CGRect frame = self.toolbarHolder.frame;
+            [self toolbarOnHideKeyboard:extraHeight keyboardHeight:keyboardHeight sizeOfToolbar:sizeOfToolbar];
             
-            if (_alwaysShowToolbar) {
-                frame.origin.y = self.view.frame.size.height - sizeOfToolbar;
-            } else {
-                frame.origin.y = self.view.frame.size.height + keyboardHeight;
-            }
-            
-            self.toolbarHolder.frame = frame;
-            
-            // Editor View
-            CGRect editorFrame = self.editorView.frame;
-            
-            if (_alwaysShowToolbar) {
-                editorFrame.size.height = ((self.view.frame.size.height - sizeOfToolbar) - extraHeight);
-            } else {
-                editorFrame.size.height = self.view.frame.size.height;
-            }
-            
-            self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            
-            // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            
-            if (_alwaysShowToolbar) {
-                sourceFrame.size.height = ((self.view.frame.size.height - sizeOfToolbar) - extraHeight);
-            } else {
-                sourceFrame.size.height = self.view.frame.size.height;
-            }
-            
-            self.sourceView.frame = sourceFrame;
-            
-            [self setFooterHeight:0];
-            [self setContentHeight:self.editorViewFrame.size.height];
-            
-        } completion:^(BOOL finished) {
-            _keyboardVisible = NO;
-        }];
+        } completion: NULL];
         
     }
+    
+    [self updateKeyboardImage];
     
 }
 
