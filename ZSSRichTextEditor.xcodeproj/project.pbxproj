@@ -430,10 +430,10 @@
 			children = (
 				4513B3D6184E8F5100A9CA86 /* ZSSBarButtonItem.h */,
 				4513B3D7184E8F5100A9CA86 /* ZSSBarButtonItem.m */,
-				4552C48F189A094C004EF847 /* ZSSTextView.h */,
-				4552C490189A094C004EF847 /* ZSSTextView.m */,
 				DB703BB41D7B73600013C608 /* ZSSFontsViewController.h */,
 				DB703BB51D7B73600013C608 /* ZSSFontsViewController.m */,
+				4552C48F189A094C004EF847 /* ZSSTextView.h */,
+				4552C490189A094C004EF847 /* ZSSTextView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";

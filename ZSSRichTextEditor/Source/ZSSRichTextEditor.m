@@ -298,8 +298,10 @@ static CGFloat kDefaultScale = 0.5;
         toolbarCropper.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         toolbarCropper.clipsToBounds = YES;
         
+        CGFloat margin = [self toolbarMargin];
+        
         // Use a toolbar so that we can tint
-        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-12, -1, 44, 44)];
+        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, 44+(2*margin), 44)];
         keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
         [toolbarCropper addSubview:keyboardToolbar];
         
@@ -905,8 +907,8 @@ static CGFloat kDefaultScale = 0.5;
     }
     
     // get the width before we add custom buttons
-    CGFloat toolbarWidth = items.count == 0 ? 0.0f : (CGFloat)(items.count * 39) - 10;
-    
+    CGFloat toolbarWidth = items.count == 0 ? 0.0f : (CGFloat)(items.count * 39);
+
     if(self.customBarButtonItems != nil)
     {
         items = [items arrayByAddingObjectsFromArray:self.customBarButtonItems];
@@ -921,8 +923,11 @@ static CGFloat kDefaultScale = 0.5;
         item.tintColor = [self barButtonItemDefaultColor];
     }
     
-    self.toolbar.frame = CGRectMake(0, 0, toolbarWidth, 44);
-    self.toolBarScroll.contentSize = CGSizeMake(self.toolbar.frame.size.width, 44);
+    CGFloat margin = [self toolbarMargin];
+
+    self.toolbar.frame = CGRectMake(-margin, 0, toolbarWidth+(2*margin), 44);
+    self.toolBarScroll.contentSize = CGSizeMake(toolbarWidth-margin, 44);
+
 }
 
 
@@ -2163,6 +2168,11 @@ static CGFloat kDefaultScale = 0.5;
         }
     }
 }
+
+- (CGFloat)toolbarMargin {
+    return (UIScreen.mainScreen.bounds.size.width <= 375) ? 8.0f : 12.0f;
+}
+
 
 #pragma mark - Memory Warning Section
 - (void)didReceiveMemoryWarning {
