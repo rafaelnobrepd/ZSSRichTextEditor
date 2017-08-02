@@ -342,7 +342,7 @@ static CGFloat kDefaultScale = 0.5;
     //Add observers for keyboard showing or hiding notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:)     name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 #pragma mark - View Will Disappear Section
@@ -353,6 +353,7 @@ static CGFloat kDefaultScale = 0.5;
     //Remove observers for keyboard showing or hiding notifications
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
 }
 
@@ -2104,6 +2105,12 @@ static CGFloat kDefaultScale = 0.5;
     
     [self updateKeyboardImage];
     
+}
+
+- (void)orientationChanged:(NSNotification *)notification {
+    if (!_keyboardVisible && _alwaysShowToolbar) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:UIKeyboardWillHideNotification object:self];
+    }
 }
 
 
