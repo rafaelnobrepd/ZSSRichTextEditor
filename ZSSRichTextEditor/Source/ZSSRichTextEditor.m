@@ -189,7 +189,7 @@ static Class hackishFixClass = Nil;
 /*
  *  NSString holding the html
  */
-@property (nonatomic, strong) NSString *internalHTML;
+@property (nonatomic, copy) NSString *internalHTML;
 
 /*
  *  NSString holding the css
@@ -1045,9 +1045,7 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)updateHTML {
     
-    NSString *html = self.internalHTML;
-    self.sourceView.text = html;
-    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
+    NSString *cleanedHTML = [self removeQuotesFromHTML:self.internalHTML];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
     
