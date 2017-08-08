@@ -2115,9 +2115,11 @@ static CGFloat kDefaultScale = 0.5;
 #pragma mark - Utilities
 
 - (NSString *)removeQuotesFromHTML:(NSString *)html {
+    html = [html stringByReplacingOccurrencesOfString:@"\\\"" withString:@"{aspasescapadas}"];
+    html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"\""];
+    html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"\""];
     html = [html stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"&quot;"];
-    html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"&quot;"];
+    html = [html stringByReplacingOccurrencesOfString:@"{aspasescapadas}" withString:@"\\\""];
     html = [html stringByReplacingOccurrencesOfString:@"\r"  withString:@"\\r"];
     html = [html stringByReplacingOccurrencesOfString:@"\n"  withString:@"\\n"];
     return html;
