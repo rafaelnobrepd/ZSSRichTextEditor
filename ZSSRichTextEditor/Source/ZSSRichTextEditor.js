@@ -271,6 +271,11 @@ zss_editor.setParagraph = function() {
     zss_editor.enabledEditingItems();
 }
 
+zss_editor.setEditable = function(editable) {
+    $('#zss_editor_content').attr("contenteditable", editable);
+}
+
+
 // Need way to remove formatBlock
 console.log('WARNING: We need a way to remove formatBlock items');
 

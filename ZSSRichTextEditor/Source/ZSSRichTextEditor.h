@@ -90,6 +90,11 @@ typedef enum {
 @property (nonatomic) BOOL receiveEditorDidChangeEvents;
 
 /**
+ * If editor is editable or not
+ */
+@property (nonatomic) BOOL editable;
+
+/**
  * Defines the presentation style for internal controller
  */
 @property (nonatomic) ZSSRichTextEditorPresentationStyle presentationStyle;

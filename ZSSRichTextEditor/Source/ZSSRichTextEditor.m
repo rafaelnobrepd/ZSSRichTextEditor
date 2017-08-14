@@ -278,58 +278,60 @@ static CGFloat kDefaultScale = 0.5;
     //Editor View
     [self createEditorViewWithFrame:frame];
     
-    //Image Picker used to allow the user insert images from the device (base64 encoded)
-    [self setUpImagePicker];
-    
-    //Scrolling View
-    [self createToolBarScroll];
-    
-    //Toolbar with icons
-    [self createToolbar];
-    
-    //Parent holding view
-    [self createParentHoldingView];
-    
-    //Hide Keyboard
-    if (![self isIpad]) { 
+    if (self.editable) {
         
-        // Toolbar holder used to crop and position toolbar
-        UIView *toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-44, 0, 44, 44)];
-        toolbarCropper.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        toolbarCropper.clipsToBounds = YES;
+        //Image Picker used to allow the user insert images from the device (base64 encoded)
+        [self setUpImagePicker];
         
-        CGFloat margin = [self toolbarMargin];
+        //Scrolling View
+        [self createToolBarScroll];
         
-        // Use a toolbar so that we can tint
-        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, 44+(2*margin), 44)];
-        keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
-        [toolbarCropper addSubview:keyboardToolbar];
+        //Toolbar with icons
+        [self createToolbar];
         
-        self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:self
-                                                             action:@selector(dismissKeyboard)];
+        //Parent holding view
+        [self createParentHoldingView];
         
-        keyboardToolbar.items = @[self.keyboardItem];
-        [self.toolbarHolder addSubview:toolbarCropper];
+        //Hide Keyboard
+        if (![self isIpad]) {
+            
+            // Toolbar holder used to crop and position toolbar
+            UIView *toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-44, 0, 44, 44)];
+            toolbarCropper.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            toolbarCropper.clipsToBounds = YES;
+            
+            CGFloat margin = [self toolbarMargin];
+            
+            // Use a toolbar so that we can tint
+            UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, 44+(2*margin), 44)];
+            keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
+            [toolbarCropper addSubview:keyboardToolbar];
+            
+            self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(dismissKeyboard)];
+            
+            keyboardToolbar.items = @[self.keyboardItem];
+            [self.toolbarHolder addSubview:toolbarCropper];
+            
+            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
+            line.backgroundColor = [UIColor lightGrayColor];
+            line.alpha = 0.7f;
+            [toolbarCropper addSubview:line];
+            
+        }
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
-        line.backgroundColor = [UIColor lightGrayColor];
-        line.alpha = 0.7f;
-        [toolbarCropper addSubview:line];
+        [self.view addSubview:self.toolbarHolder];
+        
+        //Build the toolbar
+        [self buildToolbar];
         
     }
-    
-    [self.view addSubview:self.toolbarHolder];
-    
-    //Build the toolbar
-    [self buildToolbar];
-    
+
     //Load Resources
     if (!self.resourcesLoaded) {
-        
         [self loadResources];
-        
     }
     
 }
@@ -389,35 +391,28 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)setUpImagePicker {
-    
     self.imagePicker = [[UIImagePickerController alloc] init];
     self.imagePicker.delegate = self;
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     self.imagePicker.allowsEditing = YES;
     self.selectedImageScale = kDefaultScale; //by default scale to half the size
-    
 }
 
 - (void)createToolBarScroll {
-    
     self.toolBarScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [self isIpad] ? self.view.frame.size.width : self.view.frame.size.width - 44, 44)];
     self.toolBarScroll.backgroundColor = [UIColor clearColor];
     self.toolBarScroll.showsHorizontalScrollIndicator = NO;
-    
 }
 
 - (void)createToolbar {
-    
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.toolbar.backgroundColor = [UIColor clearColor];
     [self.toolBarScroll addSubview:self.toolbar];
     self.toolBarScroll.autoresizingMask = self.toolbar.autoresizingMask;
-    
 }
 
 - (void)createParentHoldingView {
-    
     //Background Toolbar
     UIToolbar *backgroundToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     backgroundToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -1045,6 +1040,9 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)updateHTML {
     
+    //Set Editable
+    [self editable:self.editable];
+
     NSString *cleanedHTML = [self removeQuotesFromHTML:self.internalHTML];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
@@ -1228,6 +1226,11 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)paragraph {
     NSString *trigger = @"zss_editor.setParagraph();";
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
+- (void)editable:(BOOL)editable {
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.setEditable(%@);", (editable ? @"true" : @"false")];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
