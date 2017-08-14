@@ -266,6 +266,10 @@ static CGFloat kDefaultScale = 0.5;
     self.formatHTML = YES;
     self.presentationStyle = ZSSRichTextEditorPresentationStylePush;
     
+    if (self.editable == NULL) {
+        self.editable = YES;
+    }
+    
     //Initalise enabled toolbar items array
     self.enabledToolbarItems = [[NSArray alloc] init];
     
