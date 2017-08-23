@@ -120,6 +120,13 @@ typedef enum {
 @property (nonatomic, strong) UIColor *toolbarItemSelectedTintColor;
 
 /**
+ *  Returns if the keyboard is visible or not
+ *
+ */
+@property (nonatomic) BOOL isKeyboardVisible;
+
+
+/**
  *  Sets the HTML for the entire editor
  *
  *  @param html         HTML string to set for the editor
@@ -161,6 +168,11 @@ typedef enum {
  *
  */
 - (void)insertHTML:(NSString *)html;
+
+/**
+ *  Manually remove content on the text editor by tag name
+ */
+- (void)removeByTagName:(NSString *)tagName;
 
 /**
  *  Manually focuses on the text editor
@@ -234,6 +246,11 @@ typedef enum {
 - (void)addCustomToolbarItem:(ZSSBarButtonItem *)item;
 
 /**
+ *  Add a custom ZSSBarButtonItem on right right fixed menu
+ */
+- (void)addCustomFixedToolbarItem:(ZSSBarButtonItem *)item;
+    
+/**
  *  Scroll event callback with position
  */
 - (void)editorDidScrollWithPosition:(NSInteger)position;
@@ -262,5 +279,15 @@ typedef enum {
  *  Show accessory view controller with predefined presentation style
  */
 - (void)showViewController:(UIViewController *)viewControllerToPresent;
+
+/**
+ *  Show a toolbar overlay with custom message
+ */
+- (void)showToolbarMessage:(NSString *)message;
+
+/**
+ *  Hide a toolbar overlay with custom message
+ */
+- (void)hideToolbarMessage;
 
 @end

@@ -102,6 +102,11 @@ static Class hackishFixClass = Nil;
 @property (nonatomic, strong) UIView *toolbarHolder;
 
 /*
+ *  Cropper for right fixed toolbar
+ */
+@property (nonatomic, strong) UIView *toolbarCropper;
+
+/*
  *  String for the HTML
  */
 @property (nonatomic, strong) NSString *htmlString;
@@ -174,12 +179,17 @@ static Class hackishFixClass = Nil;
 /*
  *  Bar button item for the keyboard dismiss button in the toolbar
  */
-@property (nonatomic, strong) UIBarButtonItem *keyboardItem;
+@property (nonatomic, strong) ZSSBarButtonItem *keyboardItem;
 
 /*
  *  Array for custom bar button items
  */
 @property (nonatomic, strong) NSMutableArray *customBarButtonItems;
+
+/*
+ *  Array for custom fixed/right ZSSBarButtonItems
+ */
+@property (nonatomic, strong) NSArray *customFixedToolbarItems;
 
 /*
  *  Array for custom ZSSBarButtonItems
@@ -200,11 +210,6 @@ static Class hackishFixClass = Nil;
  *  BOOL for if the editor is loaded or not
  */
 @property (nonatomic) BOOL editorLoaded;
-
-/*
- *  BOOL for if the keyboard is visible or not
- */
-@property (nonatomic) BOOL keyboardVisible;
 
 /*
  *  Image Picker for selecting photos from users photo library
@@ -258,17 +263,14 @@ static CGFloat kDefaultScale = 0.5;
     self.bundle = [NSBundle bundleForClass:[ZSSRichTextEditor class]];
     
     //Initialise variables
-    self.keyboardVisible = NO;
+    self.isKeyboardVisible = NO;
     self.editorLoaded = NO;
     self.receiveEditorDidChangeEvents = NO;
     self.alwaysShowToolbar = NO;
     self.shouldShowKeyboard = YES;
     self.formatHTML = YES;
     self.presentationStyle = ZSSRichTextEditorPresentationStylePush;
-    
-    if (self.editable == NULL) {
-        self.editable = YES;
-    }
+    self.customFixedToolbarItems = @[];
     
     //Initalise enabled toolbar items array
     self.enabledToolbarItems = [[NSArray alloc] init];
@@ -296,41 +298,9 @@ static CGFloat kDefaultScale = 0.5;
         //Parent holding view
         [self createParentHoldingView];
         
-        //Hide Keyboard
-        if (![self isIpad]) {
-            
-            // Toolbar holder used to crop and position toolbar
-            UIView *toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-44, 0, 44, 44)];
-            toolbarCropper.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-            toolbarCropper.clipsToBounds = YES;
-            
-            CGFloat margin = [self toolbarMargin];
-            
-            // Use a toolbar so that we can tint
-            UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, 44+(2*margin), 44)];
-            keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
-            [toolbarCropper addSubview:keyboardToolbar];
-            
-            self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:self
-                                                                 action:@selector(dismissKeyboard)];
-            
-            keyboardToolbar.items = @[self.keyboardItem];
-            [self.toolbarHolder addSubview:toolbarCropper];
-            
-            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
-            line.backgroundColor = [UIColor lightGrayColor];
-            line.alpha = 0.7f;
-            [toolbarCropper addSubview:line];
-            
-        }
-        
-        [self.view addSubview:self.toolbarHolder];
-        
         //Build the toolbar
         [self buildToolbar];
-        
+
     }
 
     //Load Resources
@@ -403,7 +373,7 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)createToolBarScroll {
-    self.toolBarScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [self isIpad] ? self.view.frame.size.width : self.view.frame.size.width - 44, 44)];
+    self.toolBarScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, 44)];
     self.toolBarScroll.backgroundColor = [UIColor clearColor];
     self.toolBarScroll.showsHorizontalScrollIndicator = NO;
 }
@@ -434,6 +404,35 @@ static CGFloat kDefaultScale = 0.5;
     [self.toolbarHolder addSubview:self.toolBarScroll];
     [self.toolbarHolder insertSubview:backgroundToolbar atIndex:0];
     
+}
+
+- (void)showToolbarMessage:(NSString *)message {
+    UIView *labelHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.toolbarHolder.frame.size.width, self.toolbarHolder.frame.size.height)];
+    labelHolder.tag = NSIntegerMax-1;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, labelHolder.frame.size.width-20, labelHolder.frame.size.height)];
+    label.textColor = [UIColor lightGrayColor];
+    label.text = message;
+    
+    [labelHolder addSubview:label];
+    
+    [self hideToolbarMessage];
+    [self.toolbar setAlpha:0.0f];
+    
+    if ([self.toolbarCropper isDescendantOfView:self.toolbarHolder]) {
+        [self.toolbarHolder insertSubview:labelHolder atIndex:[self.toolbarHolder.subviews count]-1];
+    } else {
+        [self.toolbarHolder addSubview:labelHolder];
+    }
+    
+}
+
+- (void)hideToolbarMessage {
+    UIView *message = [self.toolbarHolder viewWithTag:NSIntegerMax-1];
+    if (message != nil) {
+        [message removeFromSuperview];
+    }
+    [self.toolbar setAlpha:1.0f];
 }
 
 #pragma mark - Resources Section
@@ -895,6 +894,12 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)buildToolbar {
     
+    //Fixed right toolbar
+    [self buildFixedToolbar];
+    [self.view addSubview:self.toolbarHolder];
+    
+    CGFloat margin = [self toolbarMargin];
+    
     // Check to see if we have any toolbar items, if not, add them all
     NSArray *items = [self itemsForToolbar];
     if (items.count == 0 && !(_enabledToolbarItems && [_enabledToolbarItems containsObject:ZSSRichTextEditorToolbarNone])) {
@@ -907,14 +912,14 @@ static CGFloat kDefaultScale = 0.5;
     }
     
     // get the width before we add custom buttons
-    CGFloat toolbarWidth = items.count == 0 ? 0.0f : (CGFloat)(items.count * 39);
+    CGFloat toolbarWidth = items.count == 0 ? 0.0f : (CGFloat)(items.count * (28+margin));
 
     if(self.customBarButtonItems != nil)
     {
         items = [items arrayByAddingObjectsFromArray:self.customBarButtonItems];
         for(ZSSBarButtonItem *buttonItem in self.customBarButtonItems)
         {
-            toolbarWidth += buttonItem.customView.frame.size.width + 11.0f;
+            toolbarWidth += buttonItem.customView.frame.size.width + margin;
         }
     }
     
@@ -922,14 +927,68 @@ static CGFloat kDefaultScale = 0.5;
     for (ZSSBarButtonItem *item in items) {
         item.tintColor = [self barButtonItemDefaultColor];
     }
-    
-    CGFloat margin = [self toolbarMargin];
 
     self.toolbar.frame = CGRectMake(-margin, 0, toolbarWidth+(2*margin), 44);
     self.toolBarScroll.contentSize = CGSizeMake(toolbarWidth-margin, 44);
 
 }
 
+- (void)buildFixedToolbar {
+    if (![self isIpad] || self.customFixedToolbarItems.count > 0) {
+        
+        CGFloat margin = [self toolbarMargin];
+        
+        UIView *oldToolbar = [self.toolbarHolder viewWithTag:NSIntegerMax];
+        if (oldToolbar != nil) {
+            [oldToolbar removeFromSuperview];
+        }
+        
+        NSArray *items = [self.customFixedToolbarItems copy];
+        
+        if (![self isIpad]) {
+            self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(dismissKeyboard)];
+            
+            items = [items arrayByAddingObject:self.keyboardItem];
+        }
+        
+        CGFloat width = items.count * 44;
+        
+        // Toolbar holder used to crop and position toolbar
+        self.toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-width, 0, width, 44)];
+        self.toolbarCropper.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        self.toolbarCropper.clipsToBounds = YES;
+        self.toolbarCropper.tag = NSIntegerMax;
+        
+        // Use a toolbar so that we can tint
+        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, width+(2*margin), 44)];
+        keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
+        [self.toolbarCropper addSubview:keyboardToolbar];
+        
+        if (width > 0) {
+            
+            for (ZSSBarButtonItem *item in items) {
+                item.tintColor = [self barButtonItemDefaultColor];
+            }
+            
+            keyboardToolbar.items = items;
+            [self.toolbarHolder addSubview:self.toolbarCropper];
+            
+            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
+            line.backgroundColor = [UIColor lightGrayColor];
+            line.alpha = 0.7f;
+            [self.toolbarCropper addSubview:line];
+            
+        }
+        
+        // Update scrollbar width
+        CGRect tFrame = self.toolBarScroll.frame;
+        self.toolBarScroll.frame = CGRectMake(tFrame.origin.x, tFrame.origin.y, UIScreen.mainScreen.bounds.size.width - width, tFrame.size.height);
+        
+    }
+}
 
 #pragma mark - Editor Modification Section
 
@@ -1088,13 +1147,13 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)updateKeyboardImage {
-    self.keyboardItem.image = [UIImage imageNamed: _keyboardVisible ? @"ZSSkeyboardDown.png" : @"ZSSkeyboardUp.png"
+    self.keyboardItem.image = [UIImage imageNamed: self.isKeyboardVisible ? @"ZSSkeyboardDown.png" : @"ZSSkeyboardUp.png"
                                          inBundle:self.bundle
                     compatibleWithTraitCollection:nil];
 }
 
 - (void)dismissKeyboard {
-    if (_keyboardVisible) {
+    if (self.isKeyboardVisible) {
         [self.view endEditing:YES];
         [self updateKeyboardImage];
     } else {
@@ -1120,6 +1179,11 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)removeFormat {
     NSString *trigger = @"zss_editor.removeFormating();";
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
+- (void)removeByTagName:(NSString *)tagName {
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.removeByTagName(\"%@\");", tagName];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
@@ -1476,6 +1540,19 @@ static CGFloat kDefaultScale = 0.5;
     [self buildToolbar];
 }
 
+- (void)addCustomFixedToolbarItem:(ZSSBarButtonItem *)item {
+    if (self.customFixedToolbarItems == nil) {
+        self.customFixedToolbarItems = @[];
+    }
+    
+    if ([self.customFixedToolbarItems indexOfObject:item] == NSNotFound) {
+        NSArray *original = [[self.customFixedToolbarItems reverseObjectEnumerator] allObjects];
+        original = [original arrayByAddingObject:item];
+        self.customFixedToolbarItems = [[original reverseObjectEnumerator] allObjects];
+    }
+    
+    [self buildToolbar];
+}
 
 - (void)removeLink {
     [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
@@ -2068,7 +2145,7 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
         
-        _keyboardVisible = YES;
+        self.isKeyboardVisible = YES;
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
@@ -2098,7 +2175,7 @@ static CGFloat kDefaultScale = 0.5;
         
     } else {
         
-        _keyboardVisible = NO;
+        self.isKeyboardVisible = NO;
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
@@ -2113,7 +2190,7 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)orientationChanged:(NSNotification *)notification {
-    if (!_keyboardVisible && _alwaysShowToolbar) {
+    if (!self.isKeyboardVisible && _alwaysShowToolbar) {
         [[NSNotificationCenter defaultCenter] postNotificationName:UIKeyboardWillHideNotification object:self];
     }
 }

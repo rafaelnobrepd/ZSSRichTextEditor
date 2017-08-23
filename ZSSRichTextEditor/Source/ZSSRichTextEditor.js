@@ -238,6 +238,12 @@ zss_editor.removeFormating = function() {
     zss_editor.enabledEditingItems();
 }
 
+zss_editor.removeByTagName = function(tagName) {
+    var elements = document.getElementsByTagName(tagName)
+    while (elements[0]) elements[0].parentNode.removeChild(elements[0])
+    zss_editor.enabledEditingItems();
+}
+
 zss_editor.setHorizontalRule = function() {
     document.execCommand('insertHorizontalRule', false, null);
     zss_editor.enabledEditingItems();
@@ -492,7 +498,32 @@ zss_editor.setHTML = function(html) {
 }
 
 zss_editor.insertHTML = function(html) {
-    document.execCommand('insertHTML', false, html);
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+    var node = wrapper.firstChild;
+    
+    if (node) {
+        var sel = window.getSelection();
+        if (!sel.rangeCount) {
+            zss_editor.focusEditor()
+            sel = window.getSelection();
+        }
+        
+        if (sel.rangeCount) {
+            var range = sel.getRangeAt(0);
+            range.collapse(false);
+            range.insertNode(node);
+            range = range.cloneRange();
+            range.selectNodeContents(node);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+        
+    } else {
+        document.execCommand('insertHTML', false, html);
+    }
+    
     zss_editor.enabledEditingItems();
 }
 
