@@ -107,6 +107,11 @@ static Class hackishFixClass = Nil;
 @property (nonatomic, strong) UIView *toolbarCropper;
 
 /*
+ *  Separator line for right fixed toolbar
+ */
+@property (nonatomic, strong) UIView *toolbarSeparator;
+
+/*
  *  String for the HTML
  */
 @property (nonatomic, strong) NSString *htmlString;
@@ -284,6 +289,9 @@ static CGFloat kDefaultScale = 0.5;
     //Editor View
     [self createEditorViewWithFrame:frame];
     
+    //Toolbar Separator
+    [self createToolbarSeparator];
+    
     if (self.editable) {
         
         //Image Picker used to allow the user insert images from the device (base64 encoded)
@@ -335,6 +343,12 @@ static CGFloat kDefaultScale = 0.5;
 
 #pragma mark - Set Up View Section
 
+- (void)createToolbarSeparator {
+    self.toolbarSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
+    self.toolbarSeparator.backgroundColor = [UIColor lightGrayColor];
+    self.toolbarSeparator.alpha = 0.7f;
+}
+
 - (void)createSourceViewWithFrame:(CGRect)frame {
     
     self.sourceView = [[ZSSTextView alloc] initWithFrame:frame];
@@ -359,7 +373,10 @@ static CGFloat kDefaultScale = 0.5;
     self.editorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.editorView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.editorView.scrollView.bounces = NO;
-    self.editorView.backgroundColor = [UIColor whiteColor];
+    
+    self.editorView.backgroundColor = [UIColor clearColor];
+    self.editorView.opaque = NO;
+    
     [self.view addSubview:self.editorView];
     
 }
@@ -407,24 +424,31 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)showToolbarMessage:(NSString *)message {
-    UIView *labelHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.toolbarHolder.frame.size.width, self.toolbarHolder.frame.size.height)];
+    [self showToolbarMessage:message alignment:NSTextAlignmentLeft hideSeparator:false];
+}
+
+- (void)showToolbarMessage:(NSString *)message alignment:(NSTextAlignment)alignment hideSeparator:(BOOL)hideSeparator {
+    UIView *labelHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.toolbarHolder.frame.size.width - self.toolbarCropper.frame.size.width, self.toolbarHolder.frame.size.height)];
     labelHolder.tag = NSIntegerMax-1;
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, labelHolder.frame.size.width-20, labelHolder.frame.size.height)];
     label.textColor = [UIColor lightGrayColor];
     label.text = message;
+    label.textAlignment = alignment;
     
     [labelHolder addSubview:label];
     
     [self hideToolbarMessage];
     [self.toolbar setAlpha:0.0f];
     
+    if (hideSeparator)
+        [self.toolbarSeparator setAlpha:0.0f];
+    
     if ([self.toolbarCropper isDescendantOfView:self.toolbarHolder]) {
         [self.toolbarHolder insertSubview:labelHolder atIndex:[self.toolbarHolder.subviews count]-1];
     } else {
         [self.toolbarHolder addSubview:labelHolder];
     }
-    
 }
 
 - (void)hideToolbarMessage {
@@ -433,6 +457,9 @@ static CGFloat kDefaultScale = 0.5;
         [message removeFromSuperview];
     }
     [self.toolbar setAlpha:1.0f];
+    
+    if (self.toolbarSeparator.alpha == 0.0f)
+        [self.toolbarSeparator setAlpha:0.7f];
 }
 
 #pragma mark - Resources Section
@@ -976,10 +1003,7 @@ static CGFloat kDefaultScale = 0.5;
             keyboardToolbar.items = items;
             [self.toolbarHolder addSubview:self.toolbarCropper];
             
-            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
-            line.backgroundColor = [UIColor lightGrayColor];
-            line.alpha = 0.7f;
-            [self.toolbarCropper addSubview:line];
+            [self.toolbarCropper addSubview:self.toolbarSeparator];
             
         }
         

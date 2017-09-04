@@ -175,6 +175,11 @@ typedef enum {
 - (void)removeByTagName:(NSString *)tagName;
 
 /**
+ *  Set if editor is editable or not
+ */
+- (void)editable:(BOOL)editable;
+
+/**
  *  Manually focuses on the text editor
  */
 - (void)focusTextEditor;
@@ -284,6 +289,11 @@ typedef enum {
  *  Show a toolbar overlay with custom message
  */
 - (void)showToolbarMessage:(NSString *)message;
+
+/**
+ *  Show a toolbar overlay with custom message
+ */
+- (void)showToolbarMessage:(NSString *)message alignment:(NSTextAlignment)alignment hideSeparator:(BOOL)hideSeparator;
 
 /**
  *  Hide a toolbar overlay with custom message
