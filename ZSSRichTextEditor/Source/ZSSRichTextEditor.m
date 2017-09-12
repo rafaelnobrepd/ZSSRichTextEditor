@@ -2165,6 +2165,8 @@ static CGFloat kDefaultScale = 0.5;
     // Correct Curve
     UIViewAnimationOptions animationOptions = curve << 16;
     
+    CGFloat tabbarHeightIfNeeded = [self tabbarHeightIfNeeded];
+    
     const int extraHeight = 10;
     
     if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
@@ -2175,7 +2177,7 @@ static CGFloat kDefaultScale = 0.5;
             
             // Toolbar
             CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar);
+            frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar) + tabbarHeightIfNeeded;
             self.toolbarHolder.frame = frame;
             
             // Editor View
@@ -2215,10 +2217,20 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)orientationChanged:(NSNotification *)notification {
     if (!self.isKeyboardVisible && _alwaysShowToolbar) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:UIKeyboardWillHideNotification object:self];
+        [self toolbarOnHideKeyboard:0 keyboardHeight:0 sizeOfToolbar:self.toolbarHolder.frame.size.height];
     }
 }
 
+- (CGFloat)tabbarHeightIfNeeded {
+    CGFloat extraHeight = 0.0f;
+    if (self.parentViewController != nil) {
+        if ([self.parentViewController isKindOfClass:[UITabBarController class]]) {
+            CGRect frame = ((UITabBarController *) self.parentViewController).tabBar.frame;
+            extraHeight = frame.size.height;
+        }
+    }
+    return extraHeight;
+}
 
 #pragma mark - Utilities
 
