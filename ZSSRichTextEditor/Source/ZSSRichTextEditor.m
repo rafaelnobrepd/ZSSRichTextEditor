@@ -112,6 +112,11 @@ static Class hackishFixClass = Nil;
 @property (nonatomic, strong) UIView *toolbarSeparator;
 
 /*
+ *  Fixed toolbar
+ */
+@property (nonatomic, strong) UIToolbar *fixedToolbar;
+
+/*
  *  String for the HTML
  */
 @property (nonatomic, strong) NSString *htmlString;
@@ -511,6 +516,7 @@ static CGFloat kDefaultScale = 0.5;
     }
     self.keyboardItem.tintColor = toolbarItemTintColor;
     
+    [self toolbarTintColorIfNeeded];
 }
 
 
@@ -518,6 +524,14 @@ static CGFloat kDefaultScale = 0.5;
     
     _toolbarItemSelectedTintColor = toolbarItemSelectedTintColor;
     
+}
+
+- (void)toolbarTintColorIfNeeded {
+    // for iOS 9
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.0) {
+        self.toolbar.tintColor = [self barButtonItemDefaultColor];
+        self.fixedToolbar.tintColor = [self barButtonItemDefaultColor];
+    }
 }
 
 - (NSArray *)itemsForToolbar {
@@ -923,6 +937,7 @@ static CGFloat kDefaultScale = 0.5;
     
     //Fixed right toolbar
     [self buildFixedToolbar];
+    
     [self.view addSubview:self.toolbarHolder];
     
     CGFloat margin = [self toolbarMargin];
@@ -941,11 +956,9 @@ static CGFloat kDefaultScale = 0.5;
     // get the width before we add custom buttons
     CGFloat toolbarWidth = items.count == 0 ? 0.0f : (CGFloat)(items.count * (28+margin));
 
-    if(self.customBarButtonItems != nil)
-    {
+    if(self.customBarButtonItems != nil) {
         items = [items arrayByAddingObjectsFromArray:self.customBarButtonItems];
-        for(ZSSBarButtonItem *buttonItem in self.customBarButtonItems)
-        {
+        for (ZSSBarButtonItem *buttonItem in self.customBarButtonItems) {
             toolbarWidth += buttonItem.customView.frame.size.width + margin;
         }
     }
@@ -990,9 +1003,9 @@ static CGFloat kDefaultScale = 0.5;
         self.toolbarCropper.tag = NSIntegerMax;
         
         // Use a toolbar so that we can tint
-        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, width+(2*margin), 44)];
-        keyboardToolbar.layoutMargins = UIEdgeInsetsZero;
-        [self.toolbarCropper addSubview:keyboardToolbar];
+        self.fixedToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, width+(2*margin), 44)];
+        self.fixedToolbar.layoutMargins = UIEdgeInsetsZero;
+        [self.toolbarCropper addSubview:self.fixedToolbar];
         
         if (width > 0) {
             
@@ -1000,7 +1013,7 @@ static CGFloat kDefaultScale = 0.5;
                 item.tintColor = [self barButtonItemDefaultColor];
             }
             
-            keyboardToolbar.items = items;
+            self.fixedToolbar.items = items;
             [self.toolbarHolder addSubview:self.toolbarCropper];
             
             [self.toolbarCropper addSubview:self.toolbarSeparator];
@@ -1011,6 +1024,7 @@ static CGFloat kDefaultScale = 0.5;
         CGRect tFrame = self.toolBarScroll.frame;
         self.toolBarScroll.frame = CGRectMake(tFrame.origin.x, tFrame.origin.y, UIScreen.mainScreen.bounds.size.width - width, tFrame.size.height);
         
+        [self toolbarTintColorIfNeeded];
     }
 }
 
