@@ -125,6 +125,11 @@ typedef enum {
  */
 @property (nonatomic) BOOL isKeyboardVisible;
 
+/*
+ *  UIWebView for writing/editing/displaying the content
+ */
+@property (nonatomic, strong) UIWebView *editorView;
+
 
 /**
  *  Sets the HTML for the entire editor
@@ -133,15 +138,6 @@ typedef enum {
  *
  */
 - (void)setHTML:(NSString *)html;
-
-/**
- *  Sets the HTML for the entire editor
- *
- *  @param html         HTML string to set for the editor
- *  @param completion   Block to execute after HTML setted
- *
- */
-- (void)setHTML:(NSString *)html completion:(nullable void (^)(void))handler;
 
 /**
  *  Returns the HTML from the Rich Text Editor
@@ -299,5 +295,15 @@ typedef enum {
  *  Hide a toolbar overlay with custom message
  */
 - (void)hideToolbarMessage;
+
+/**
+ *  Callback for HTML did set to editor
+ */
+- (void)htmlDidSet;
+
+/**
+ *  Will be executed before set HTML
+ */
+- (void)htmlWillSet;
 
 @end

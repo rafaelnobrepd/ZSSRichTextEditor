@@ -122,16 +122,6 @@ static Class hackishFixClass = Nil;
 @property (nonatomic, strong) NSString *htmlString;
 
 /*
- *  Completion handler for setHTML
- */
-@property (nonatomic, copy) void (^setHtmlCompletion)();
-
-/*
- *  UIWebView for writing/editing/displaying the content
- */
-@property (nonatomic, strong) UIWebView *editorView;
-
-/*
  *  ZSSTextView for displaying the source code for what is displayed in the editor view
  */
 @property (nonatomic, strong) ZSSTextView *sourceView;
@@ -294,28 +284,6 @@ static CGFloat kDefaultScale = 0.5;
     //Editor View
     [self createEditorViewWithFrame:frame];
     
-    //Toolbar Separator
-    [self createToolbarSeparator];
-    
-    if (self.editable) {
-        
-        //Image Picker used to allow the user insert images from the device (base64 encoded)
-        [self setUpImagePicker];
-        
-        //Scrolling View
-        [self createToolBarScroll];
-        
-        //Toolbar with icons
-        [self createToolbar];
-        
-        //Parent holding view
-        [self createParentHoldingView];
-        
-        //Build the toolbar
-        [self buildToolbar];
-
-    }
-
     //Load Resources
     if (!self.resourcesLoaded) {
         [self loadResources];
@@ -333,6 +301,33 @@ static CGFloat kDefaultScale = 0.5;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:)     name:UIDeviceOrientationDidChangeNotification object:nil];
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    if (self.editable) {
+    
+        //Toolbar Separator
+        [self createToolbarSeparator];
+    
+        //Image Picker used to allow the user insert images from the device (base64 encoded)
+        [self setUpImagePicker];
+    
+        //Scrolling View
+        [self createToolBarScroll];
+    
+        //Toolbar with icons
+        [self createToolbar];
+    
+        //Parent holding view
+        [self createParentHoldingView];
+    
+        //Build the toolbar
+        [self buildToolbar];
+    
+    }
+}
+
 
 #pragma mark - View Will Disappear Section
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1125,18 +1120,15 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)setHTML:(NSString *)html {
     
+    [self htmlWillSet];
+
     self.internalHTML = html;
     
     if (self.editorLoaded) {
         [self updateHTML];
     }
-}
-
-- (void)setHTML:(NSString *)html completion:(nullable void (^)(void))handler {
-    if (handler != nil)
-        self.setHtmlCompletion = handler;
     
-    [self setHTML:html];
+    [self htmlDidSet];
 }
 
 - (void)updateHTML {
@@ -1148,13 +1140,16 @@ static CGFloat kDefaultScale = 0.5;
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
     
-    if (self.setHtmlCompletion != nil) {
-        self.setHtmlCompletion();
-        self.setHtmlCompletion = nil;
-    }
-    
     self.internalHTML = self.getHTML;
     
+}
+
+- (void)htmlDidSet {
+    // htmlDidSet must be overrided if needed
+}
+
+- (void)htmlWillSet {
+    // htmlWillSet must be overrided if needed
 }
 
 - (NSString *)getHTML {
