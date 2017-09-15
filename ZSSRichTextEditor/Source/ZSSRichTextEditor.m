@@ -523,7 +523,7 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)toolbarTintColorIfNeeded {
     // for iOS 9
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.0) {
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 11.0) {
         self.toolbar.tintColor = [self barButtonItemDefaultColor];
         self.fixedToolbar.tintColor = [self barButtonItemDefaultColor];
     }
@@ -990,15 +990,16 @@ static CGFloat kDefaultScale = 0.5;
         }
         
         CGFloat width = items.count * 44;
+        CGFloat widthCropper = width+margin;
         
         // Toolbar holder used to crop and position toolbar
-        self.toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-width, 0, width, 44)];
+        self.toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-widthCropper, 0, widthCropper, 44)];
         self.toolbarCropper.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         self.toolbarCropper.clipsToBounds = YES;
         self.toolbarCropper.tag = NSIntegerMax;
         
         // Use a toolbar so that we can tint
-        self.fixedToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, -1, width+(2*margin), 44)];
+        self.fixedToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, 0, width, 44)];
         self.fixedToolbar.layoutMargins = UIEdgeInsetsZero;
         [self.toolbarCropper addSubview:self.fixedToolbar];
         
