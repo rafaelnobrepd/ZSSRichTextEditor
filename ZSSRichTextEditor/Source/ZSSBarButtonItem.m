@@ -9,5 +9,12 @@
 #import "ZSSBarButtonItem.h"
 
 @implementation ZSSBarButtonItem
-
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+//        item.tintColor
+    }
+    return self;
+}
 @end

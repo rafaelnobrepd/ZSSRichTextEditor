@@ -981,16 +981,13 @@ static CGFloat kDefaultScale = 0.5;
         NSArray *items = [self.customFixedToolbarItems copy];
         
         if (![self isIpad]) {
-            self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil]
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:self
-                                                                 action:@selector(dismissKeyboard)];
+            self.keyboardItem = [[ZSSBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboardDown.png" inBundle:self.bundle compatibleWithTraitCollection:nil] style:UIBarButtonItemStylePlain target:self action:@selector(dismissKeyboard)];
             
             items = [items arrayByAddingObject:self.keyboardItem];
         }
         
-        CGFloat width = items.count * 44;
-        CGFloat widthCropper = width+margin;
+        CGFloat width = items.count * 28;
+        CGFloat widthCropper = width+(items.count*margin)+margin;
         
         // Toolbar holder used to crop and position toolbar
         self.toolbarCropper = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-widthCropper, 0, widthCropper, 44)];
@@ -999,7 +996,7 @@ static CGFloat kDefaultScale = 0.5;
         self.toolbarCropper.tag = NSIntegerMax;
         
         // Use a toolbar so that we can tint
-        self.fixedToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, 0, width, 44)];
+        self.fixedToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-margin, 0, widthCropper+margin, 44)];
         self.fixedToolbar.layoutMargins = UIEdgeInsetsZero;
         [self.toolbarCropper addSubview:self.fixedToolbar];
         
