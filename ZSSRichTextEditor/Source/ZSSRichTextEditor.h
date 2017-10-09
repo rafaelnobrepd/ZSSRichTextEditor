@@ -307,8 +307,8 @@ typedef enum {
 - (void)htmlWillSet;
 
 /**
- *  Will be executed after webview loaded
+ *  Will be executed after webview finish loaded
  */
-- (void)htmlDidFinishedLoad;
+- (void)htmlDidFinishLoad;
 
 @end

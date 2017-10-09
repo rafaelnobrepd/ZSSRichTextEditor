@@ -1922,10 +1922,10 @@ static CGFloat kDefaultScale = 0.5;
     };
     [ctx evaluateScript:@"document.getElementById('zss_editor_content').addEventListener('input', contentUpdateCallback, false);"];
     
-    [self htmlDidFinishedLoad];
+    [self htmlDidFinishLoad];
 }
 
-- (void)htmlDidFinishedLoad {
+- (void)htmlDidFinishLoad {
     
 }
 
