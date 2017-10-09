@@ -1922,6 +1922,11 @@ static CGFloat kDefaultScale = 0.5;
     };
     [ctx evaluateScript:@"document.getElementById('zss_editor_content').addEventListener('input', contentUpdateCallback, false);"];
     
+    [self htmlDidFinishedLoad];
+}
+
+- (void)htmlDidFinishedLoad {
+    
 }
 
 #pragma mark - Mention & Hashtag Support Section
