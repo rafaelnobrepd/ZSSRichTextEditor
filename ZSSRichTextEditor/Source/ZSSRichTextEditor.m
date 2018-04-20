@@ -1461,9 +1461,11 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
+        __weak __typeof__(self) weakSelf = self;
+        
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[self localizedString:@"Insert Link"] message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = [self localizedString:@"URL (required)"];
+            textField.placeholder = [weakSelf localizedString:@"URL (required)"];
             if (url) {
                 textField.text = url;
             }
@@ -1472,7 +1474,7 @@ static CGFloat kDefaultScale = 0.5;
             textField.clearButtonMode = UITextFieldViewModeAlways;
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = [self localizedString:@"Title"];
+            textField.placeholder = [weakSelf localizedString:@"Title"];
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (title) {
@@ -1480,23 +1482,25 @@ static CGFloat kDefaultScale = 0.5;
             }
         }];
         [alertController addAction:[UIAlertAction actionWithTitle:[self localizedString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [self focusTextEditor];
+            [weakSelf focusTextEditor];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             
             UITextField *linkURL = [alertController.textFields objectAtIndex:0];
             UITextField *title = [alertController.textFields objectAtIndex:1];
-            if (!self.selectedLinkURL) {
-                [self insertLink:linkURL.text title:title.text];
+            if (!weakSelf.selectedLinkURL) {
+                [weakSelf insertLink:linkURL.text title:title.text];
                 //NSLog(@"insert link");
             } else {
-                [self updateLink:linkURL.text title:title.text];
+                [weakSelf updateLink:linkURL.text title:title.text];
             }
-            [self focusTextEditor];
+            [weakSelf focusTextEditor];
         }]];
         [self presentViewController:alertController animated:YES completion:NULL];
         
     } else {
+        
+        
         
         self.alertView = [[UIAlertView alloc] initWithTitle:[self localizedString:@"Insert Link"] message:nil delegate:self
                                           cancelButtonTitle:[self localizedString:@"Cancel"] otherButtonTitles:insertButtonTitle, nil];
@@ -1624,9 +1628,11 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
+        __weak __typeof__(self) weakSelf = self;
+        
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[self localizedString:@"Insert Image"] message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = [self localizedString:@"URL (required)"];
+            textField.placeholder = [weakSelf localizedString:@"URL (required)"];
             if (url) {
                 textField.text = url;
             }
@@ -1635,7 +1641,7 @@ static CGFloat kDefaultScale = 0.5;
             textField.clearButtonMode = UITextFieldViewModeAlways;
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = [self localizedString:@"Alt"];
+            textField.placeholder = [weakSelf localizedString:@"Alt"];
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (alt) {
@@ -1643,18 +1649,18 @@ static CGFloat kDefaultScale = 0.5;
             }
         }];
         [alertController addAction:[UIAlertAction actionWithTitle:[self localizedString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [self focusTextEditor];
+            [weakSelf focusTextEditor];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             
             UITextField *imageURL = [alertController.textFields objectAtIndex:0];
             UITextField *alt = [alertController.textFields objectAtIndex:1];
-            if (!self.selectedImageURL) {
-                [self insertImage:imageURL.text alt:alt.text];
+            if (!weakSelf.selectedImageURL) {
+                [weakSelf insertImage:imageURL.text alt:alt.text];
             } else {
-                [self updateImage:imageURL.text alt:alt.text];
+                [weakSelf updateImage:imageURL.text alt:alt.text];
             }
-            [self focusTextEditor];
+            [weakSelf focusTextEditor];
         }]];
         [self presentViewController:alertController animated:YES completion:NULL];
         
@@ -1694,11 +1700,13 @@ static CGFloat kDefaultScale = 0.5;
     //If the OS version supports the new UIAlertController go for it. Otherwise use the old UIAlertView
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
+        __weak __typeof__(self) weakSelf = self;
+        
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[self localizedString:@"Insert Image From Device"] message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         //Add alt text field
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = [self localizedString:@"Alt"];
+            textField.placeholder = [weakSelf localizedString:@"Alt"];
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (alt) {
@@ -1710,13 +1718,13 @@ static CGFloat kDefaultScale = 0.5;
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
-            textField.placeholder = [self localizedString:@"Image scale, 0.5 by default"];
+            textField.placeholder = [weakSelf localizedString:@"Image scale, 0.5 by default"];
             textField.keyboardType = UIKeyboardTypeDecimalPad;
         }];
         
         //Cancel action
         [alertController addAction:[UIAlertAction actionWithTitle:[self localizedString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [self focusTextEditor];
+            [weakSelf focusTextEditor];
         }]];
         
         //Insert action
@@ -1724,10 +1732,10 @@ static CGFloat kDefaultScale = 0.5;
             UITextField *textFieldAlt = [alertController.textFields objectAtIndex:0];
             UITextField *textFieldScale = [alertController.textFields objectAtIndex:1];
 
-            self.selectedImageScale = [textFieldScale.text floatValue]?:kDefaultScale;
-            self.selectedImageAlt = textFieldAlt.text?:@"";
+            weakSelf.selectedImageScale = [textFieldScale.text floatValue]?:kDefaultScale;
+            weakSelf.selectedImageAlt = textFieldAlt.text?:@"";
             
-            [self presentViewController:self.imagePicker animated:YES completion:nil];
+            [weakSelf presentViewController:weakSelf.imagePicker animated:YES completion:nil];
 
         }]];
         
@@ -1832,9 +1840,10 @@ static CGFloat kDefaultScale = 0.5;
         // Scroll caret to visible area
         CGPoint offset = textView.contentOffset;
         offset.y += overflow + 7; // leave 7 pixels margin
+        __weak __typeof__(textView) weakTextView = textView;
         // Cannot animate with setContentOffset:animated: or caret will not appear
         [UIView animateWithDuration:.2 animations:^{
-            [textView setContentOffset:offset];
+            [weakTextView setContentOffset:offset];
         }];
     }
     
@@ -1895,8 +1904,9 @@ static CGFloat kDefaultScale = 0.5;
     }
 
     if (self.shouldShowKeyboard) {
+        __weak __typeof__(self) weakSelf = self;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self focusTextEditor];
+            [weakSelf focusTextEditor];
         });
     } else if (_alwaysShowToolbar) {
         [self toolbarOnHideKeyboard:0 keyboardHeight:0 sizeOfToolbar:self.toolbarHolder.frame.size.height];
@@ -1909,15 +1919,16 @@ static CGFloat kDefaultScale = 0.5;
      
      */
     JSContext *ctx = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    __weak __typeof__(self) weakSelf = self;
     ctx[@"contentUpdateCallback"] = ^(JSValue *msg) {
         
-        if (_receiveEditorDidChangeEvents) {
+        if (weakSelf.receiveEditorDidChangeEvents) {
             
-            [self editorDidChangeWithText:[self getText] andHTML:[self getHTML]];
+            [weakSelf editorDidChangeWithText:[weakSelf getText] andHTML:[weakSelf getHTML]];
             
         }
         
-        [self checkForMentionOrHashtagInText:[self getText]];
+        [weakSelf checkForMentionOrHashtagInText:[weakSelf getText]];
         
     };
     [ctx evaluateScript:@"document.getElementById('zss_editor_content').addEventListener('input', contentUpdateCallback, false);"];
@@ -2185,29 +2196,31 @@ static CGFloat kDefaultScale = 0.5;
         
         self.isKeyboardVisible = YES;
         
+        __weak __typeof__(self) weakSelf = self;
+        
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
             // Toolbar
-            CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar) + tabbarHeightIfNeeded;
+            CGRect frame = weakSelf.toolbarHolder.frame;
+            frame.origin.y = weakSelf.view.frame.size.height - (keyboardHeight + sizeOfToolbar) + tabbarHeightIfNeeded;
             self.toolbarHolder.frame = frame;
             
             // Editor View
-            CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-            self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+            CGRect editorFrame = weakSelf.editorView.frame;
+            editorFrame.size.height = (weakSelf.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
+            weakSelf.editorView.frame = editorFrame;
+            weakSelf.editorViewFrame = weakSelf.editorView.frame;
+            weakSelf.editorView.scrollView.contentInset = UIEdgeInsetsZero;
+            weakSelf.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
             // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-            self.sourceView.frame = sourceFrame;
+            CGRect sourceFrame = weakSelf.sourceView.frame;
+            sourceFrame.size.height = (weakSelf.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
+            weakSelf.sourceView.frame = sourceFrame;
             
             // Provide editor with keyboard height and editor view height
-            [self setFooterHeight:(keyboardHeight - 8)];
-            [self setContentHeight: self.editorViewFrame.size.height];
+            [weakSelf setFooterHeight:(keyboardHeight - 8)];
+            [weakSelf setContentHeight: weakSelf.editorViewFrame.size.height];
             
         } completion: NULL];
         
@@ -2215,9 +2228,11 @@ static CGFloat kDefaultScale = 0.5;
         
         self.isKeyboardVisible = NO;
         
+        __weak __typeof__(self) weakSelf = self;
+        
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
-            [self toolbarOnHideKeyboard:extraHeight keyboardHeight:keyboardHeight sizeOfToolbar:sizeOfToolbar];
+            [weakSelf toolbarOnHideKeyboard:extraHeight keyboardHeight:keyboardHeight sizeOfToolbar:sizeOfToolbar];
             
         } completion: NULL];
         
